@@ -4,9 +4,14 @@ This is just an example of Kunber implementation with Laravel PHP Framework.
 
 ## How to run
 
-Make sure you have mysql, php and composer installed in your machine.
+Make sure you have mysql, php and composer installed on your machine.
 
-After cloning this repository, prepare the database by running the following commands.
+Install dependencies with composer
+```bash
+composer install
+```
+
+Then, prepare the database by running the following commands.
 
 ```bash
 # DB migration
