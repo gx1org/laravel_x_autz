@@ -1,6 +1,6 @@
-# Laravel x Kunber
+# Laravel x Autz.org
 
-This is just an example of Kunber implementation with Laravel PHP Framework.
+This is just an example of Autz.org implementation with Laravel PHP Framework.
 
 ## How to run
 
@@ -31,8 +31,7 @@ php artisan serve
 ## Resources
 
 - [Laravel 10 docs](https://laravel.com/docs/10.x)
-- [Kunber docs](https://about-kunber.zone.id/p/docs)
-- [Gx1 Contact form](https://gx1.org/contact)
+- [Autz.org docs](https://about.autz.org/p/docs)
 
 ## Contributing
 

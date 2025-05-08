@@ -54,18 +54,16 @@ class UserController extends Controller
         return redirect('/');
     }
 
-    public function authorize_kunber(Request $request) : RedirectResponse {
+    public function authorize_autzorg(Request $request) : RedirectResponse {
         $auth_code = $request->auth_code;
-        $response = Http::withHeader('Authorization', env('KUNBER_APP_SECRET'))
-        ->post('https://kunber.zone.id/api/client/'.env('KUNBER_APP_ID').'/exchange', [
-            'code' => $auth_code
-        ]);
+        $app_id = env('AUTZORG_APP_ID');
+        $response = Http::get("https://autz.org/api/client/$app_id/userinfo?code=$auth_code");
         if ($response->status() != 200) {
-            return redirect('/')->with('kunber_error', 'Invalid code!');
+            return redirect('/')->with('error', 'Invalid code!');
         }
 
-        $data = $response->json();
-        $user = $this->find_kunber_user($data);
+        $data = $response->json('user');
+        $user = $this->find_autzorg_user($data);
 
         Auth::login($user);
         $request->session()->regenerate();
@@ -73,21 +71,22 @@ class UserController extends Controller
         return redirect('/profile');
     }
 
-    private function find_kunber_user($data) {
-        $user = User::query()->where('kunber_id', $data['data']['id'])->first();
+    private function find_autzorg_user($userinfo) {
+
+        $user = User::query()->where('autzorg_id', $userinfo['id'])->first();
         if ($user) {
             return $user;
         }
 
         $user = new User([
-            'kunber_id' => $data['data']['id'],
-            'name' => $data['data']['name'],
-            'email' => $data['data']['email'],
-            'phone' => $data['data']['phone'],
-            'address' => $data['data']['address'],
-            'dob' => $data['data']['dob'],
-            'gender' => $data['data']['gender'],
-            'password' => 'random'
+            'autzorg_id' => $userinfo['id'],
+            'name' => $userinfo['name'],
+            'email' => $userinfo['email'],
+            'phone' => $userinfo['phone'],
+            'address' => $userinfo['address'],
+            'dob' => $userinfo['dob'],
+            'gender' => $userinfo['gender'],
+            'password' => 'sEcr3t'
         ]);
         $user->save();
         return $user;
